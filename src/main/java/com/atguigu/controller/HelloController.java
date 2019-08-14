@@ -8,21 +8,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import java.util.Map;
+
+@Controller
 public class HelloController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 //    @Value("${person.lastName}")
     private String name;
 
+    @ResponseBody
     @RequestMapping("/hello")
     public String hello(){
         logger.info("hello this is logger!");
         return "Hello World!";
     }
 
+    @ResponseBody
     @RequestMapping("/sayHello")
     public String sayHello(){
         return "Hello " + name;
+    }
+
+    @RequestMapping("/success")
+    public String success(Map<String, Object> map){
+        map.put("hello", "你好");
+        return "success";
     }
 
 }
