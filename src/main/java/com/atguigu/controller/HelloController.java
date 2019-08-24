@@ -16,6 +16,11 @@ public class HelloController {
 //    @Value("${person.lastName}")
     private String name;
 
+//    @RequestMapping({"/", "/index.html"})
+//    public String index(){
+//        return "index";
+//    }
+
     @ResponseBody
     @RequestMapping("/hello")
     public String hello(){
@@ -34,5 +39,13 @@ public class HelloController {
         map.put("hello", "你好");
         return "success";
     }
+
+    @RequestMapping("/index")
+    public String index(Map<String, Object> map){
+        map.put("hello", "你好");
+        return "login";
+    }
+
+
 
 }
