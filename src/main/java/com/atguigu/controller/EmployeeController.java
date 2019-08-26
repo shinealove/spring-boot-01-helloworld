@@ -7,8 +7,7 @@ import com.atguigu.entities.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -37,6 +36,29 @@ public class EmployeeController {
     @PostMapping("/emp")
     public String addEmp(Employee employee){
         System.out.println("保存的员工信息： " + employee);
+        employeeDao.save(employee);
+        return "redirect:/emps";
+    }
+
+    @GetMapping("/emp/{id}")
+    public String toEditPage(@PathVariable("id") Integer id, Model model){
+        Employee employee = employeeDao.get(id);
+        model.addAttribute("emp", employee);
+
+        Collection<Department> departments = departmentDao.getDepartments();
+        model.addAttribute("depts", departments);
+        return "emp/add";
+    }
+
+    @DeleteMapping("/emp/{id}")
+    public String delEmp(@PathVariable("id") Integer id, Model model){
+        employeeDao.delete(id);
+        return "redirect:/emps";
+    }
+
+    @PutMapping("/emp")
+    public String updateEmployee(Employee employee){
+        System.out.println("修改的员工数据：" + employee);
         employeeDao.save(employee);
         return "redirect:/emps";
     }
