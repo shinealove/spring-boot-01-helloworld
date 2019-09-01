@@ -3,14 +3,14 @@ package com.atguigu.controller;
 import com.atguigu.exception.UserNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,6 +23,16 @@ public class HelloController {
 //    public String index(){
 //        return "index";
 //    }
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @ResponseBody
+    @GetMapping("/query")
+    public Map<String, Object> map(){
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select  * from department");
+        return list.get(0);
+    }
 
     @ResponseBody
     @RequestMapping("/hello")
