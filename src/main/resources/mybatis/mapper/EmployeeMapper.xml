@@ -7,12 +7,12 @@
 
     public void insertEmp(Employee employee);-->
 
-    <select id="getEmpById" resultType="com.atguigu.entities.Employee">
-        SELECT * FROM employee WHERE id=#{id}
-    </select>
+    <!--<select id="getEmpById" resultType="com.atguigu.entities.Employee">-->
+        <!--SELECT * FROM employee WHERE id=#{id}-->
+    <!--</select>-->
 
-    <insert id="insertEmp">
-        INSERT INTO employee(lastName,email,gender,d_id) VALUES (#{lastName},#{email},#{gender},#{dId})
-    </insert>
+    <!--<insert id="insertEmp">-->
+        <!--INSERT INTO employee(lastName,email,gender,d_id) VALUES (#{lastName},#{email},#{gender},#{dId})-->
+    <!--</insert>-->
 
 </mapper>

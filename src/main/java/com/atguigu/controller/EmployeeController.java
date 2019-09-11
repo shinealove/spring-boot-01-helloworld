@@ -4,6 +4,7 @@ import com.atguigu.dao.DepartmentDao;
 import com.atguigu.dao.EmployeeDao;
 import com.atguigu.entities.Department;
 import com.atguigu.entities.Employee;
+import com.atguigu.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,13 +12,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Controller
+@RestController
 public class EmployeeController {
     @Autowired
     EmployeeDao employeeDao;
 
     @Autowired
     DepartmentDao departmentDao;
+
+    @Autowired
+    EmployeeService employeeService;
+
+    @GetMapping("/emp/lastname/{lastName}")
+    public Employee getEmpByLastName(@PathVariable("lastName") String lastName){
+        return employeeService.getEmpByLastName(lastName);
+    }
+
+    @GetMapping("/delemp")
+    public String deleteEmp(Integer id){
+        employeeService.deleteEmp(id);
+        return "success";
+    }
+
+    @GetMapping("/empU")
+    public Employee update(Employee employee){
+        employeeService.updateEmp(employee);
+        return employee;
+    }
 
     @GetMapping("/emps")
     public String list(Model model){
@@ -41,13 +62,15 @@ public class EmployeeController {
     }
 
     @GetMapping("/emp/{id}")
-    public String toEditPage(@PathVariable("id") Integer id, Model model){
-        Employee employee = employeeDao.get(id);
-        model.addAttribute("emp", employee);
-
-        Collection<Department> departments = departmentDao.getDepartments();
-        model.addAttribute("depts", departments);
-        return "emp/add";
+    public Employee toEditPage(@PathVariable("id") Integer id, Model model){
+//        Employee employee = employeeDao.get(id);
+//        model.addAttribute("emp", employee);
+//
+//        Collection<Department> departments = departmentDao.getDepartments();
+//        model.addAttribute("depts", departments);
+//        return "emp/add";
+        Employee employee = employeeService.getEmp(id);
+        return employee;
     }
 
     @DeleteMapping("/emp/{id}")
