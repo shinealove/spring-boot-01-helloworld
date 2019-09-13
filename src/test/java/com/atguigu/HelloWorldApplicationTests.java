@@ -27,9 +27,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -70,19 +76,44 @@ public class HelloWorldApplicationTests {
     @Autowired
     JestClient jestClient;
 
+//    @Autowired
+//    BookRepository bookRepository;
+
     @Autowired
-    BookRepository bookRepository;
+    JavaMailSenderImpl mailSender;
+
+    @Test
+    public void testMailSender(){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject("通知-今晚开会");
+        message.setText("今晚7：30开会");
+        message.setTo("shinea_love@sina.cn");
+        message.setFrom("648110884@qq.com");
+        mailSender.send(message);
+    }
+    @Test
+    public void testMailSender02() throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setSubject("通知-今晚开会");
+        helper.setText("<b style='color:red'>今晚7：30开会</b>", true);
+        helper.setTo("shinea_love@sina.cn");
+        helper.setFrom("648110884@qq.com");
+        helper.addAttachment("1.jpg", new File("D:\\repository\\JavaIdeaProjects\\spring-boot-01-helloworld-01\\src\\main\\resources\\resources\\1.jpg"));
+        helper.addAttachment("2.jpg", new File("D:\\repository\\JavaIdeaProjects\\spring-boot-01-helloworld-01\\src\\main\\resources\\resources\\2.jpg"));
+        mailSender.send(mimeMessage);
+    }
 
     @BeforeClass()
     public static void init(){
         System.setProperty("es.set.netty.runtime.available.processors", "false");
     }
 
-    @Test
-    public void testESBookRespository(){
-        Book book = new Book();
-        bookRepository.index(book);
-    }
+//    @Test
+//    public void testESBookRespository(){
+//        Book book = new Book();
+//        bookRepository.index(book);
+//    }
 
     @Test
     public void testESSearch(){
